@@ -78,15 +78,11 @@ minetest.register_globalstep(function(dtime)
 			end
 			
 			if nearest_ore then
-				local direction = vector.direction(localplayer:get_pos(), nearest_ore)
 				local distance = vector.distance(localplayer:get_pos(), nearest_ore)
 				
-				local player_dir = minetest.camera:get_look_dir()
+				local real_distance = vector.subtract(localplayer:get_pos(), nearest_ore)
 				
-				local goaldirection = vector.direction(direction, player_dir)
-				
-				minetest.display_chat_message("DISTANCE:"..distance.."\nDirection:\nX:"..goaldirection.x.."\nY:"..goaldirection.y.."\nZ:"..goaldirection.z.."\n\n")
-				
+				minetest.display_chat_message("DISTANCE:"..distance.."\nExact Distance:\nX:"..real_distance.x.."\nY:"..real_distance.y.."\nZ:"..real_distance.z.."\n\n")
 			end
 				
 		end
