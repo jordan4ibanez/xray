@@ -1,4 +1,11 @@
---if you use this in a server, you're an asshole
+local localplayer
+minetest.register_on_connect(function()
+	localplayer = minetest.localplayer
+	show_xray_formspec()
+end)
+
+local serverinfo = minetest.get_server_info()
+
 
 local ores = {
 "default:stone_with_coal",
@@ -61,16 +68,13 @@ end)
 
 ---
 
-local localplayer
-minetest.register_on_connect(function()
-	localplayer = minetest.localplayer
-	show_xray_formspec()
-end)
+
 
 local timer = 0
 minetest.register_globalstep(function(dtime)
 	timer = timer + dtime
-	if timer > 0.3 then
+	
+	if serverinfo.address == "" and timer > 0.3 then
 		timer = 0
 		if localplayer then
 			if ore_detecting ~= "" then
@@ -85,6 +89,13 @@ minetest.register_globalstep(function(dtime)
 				minetest.display_chat_message("DISTANCE:"..distance.."\nExact Distance:\nX:"..real_distance.x.."\nY:"..real_distance.y.."\nZ:"..real_distance.z.."\n\n")
 			end
 				
+		end
+	elseif serverinfo.address ~= "" then
+		minetest.display_chat_message("You're a scumbag")
+		print("You're a scumbag")
+		minetest.send_chat_message("I'm using xray, ban me")
+		if timer > 6 then
+			minetest.disconnect()
 		end
 	end
 
